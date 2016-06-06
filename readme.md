@@ -19,7 +19,7 @@ The installer currently supports [CraftCMS](http://craftcms.com) only, but is bu
 
 Create a new project directory and navigate into it:
 
-e.g. ```
+```
 $ mkdir my-new-site && cd my-new-site
 ```
 

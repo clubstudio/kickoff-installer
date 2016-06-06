@@ -1,0 +1,25 @@
+{
+    "name": "club/kickoff-installer",
+    "description": "Kickoff application installer.",
+    "keywords": ["kickoff", "craftcms"],
+    "require": {
+        "guzzlehttp/guzzle": "^6.2",
+        "symfony/console": "^3.1",
+        "symfony/process": "^3.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Club Studio Ltd",
+            "email": "dev@clubstudio.co.uk"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Club\\KickoffInstaller\\": "src/"
+        }
+    },
+    "bin": [
+        "kickoff"
+    ]
+}

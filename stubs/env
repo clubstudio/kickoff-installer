@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# ------------------------------------------------------------------------------
+# Create .env file
+# ------------------------------------------------------------------------------
+
+cat > .env <<EOL
+DB_HOST=localhost
+DB_NAME=
+DB_USER=
+DB_PASS=
+EOL
+
+# ------------------------------------------------------------------------------
+# Add paths to .gitignore
+# ------------------------------------------------------------------------------
+
+touch .gitignore
+echo '.env' >> .gitignore
+
+# ------------------------------------------------------------------------------
+# Add environment variables to config/db.php
+# ------------------------------------------------------------------------------
+
+sed -i "s/.*'server'.*/    'server' => getenv('DB_HOST'),/" config/db.php
+sed -i "s/.*'database'.*/    'database' => getenv('DB_NAME'),/" config/db.php
+sed -i "s/.*'user'.*/    'user' => getenv('DB_USER'),/" config/db.php
+sed -i "s/.*'password'.*/    'password' => getenv('DB_PASS'),/" config/db.php

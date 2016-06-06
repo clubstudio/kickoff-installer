@@ -1,0 +1,14 @@
+#!/usr/bin/env php
+<?php
+use Symfony\Component\Console\Application;
+use Club\KickoffInstaller\Console\NewCommand;
+
+if (file_exists(__DIR__.'/../../autoload.php')) {
+    require __DIR__.'/../../autoload.php';
+} else {
+    require __DIR__.'/vendor/autoload.php';
+}
+
+$app = new Application('CraftCMS Installer', '1.0.0');
+$app->add(new NewCommand);
+$app->run();

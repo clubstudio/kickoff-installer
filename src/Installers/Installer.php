@@ -151,4 +151,15 @@ abstract class Installer
             $this->output->write($line);
         });
     }
+
+    /**
+     * Copy a stub file
+     * @param  string $from Stub source location/filename
+     * @param  string $to   Stub destination location/filename
+     * @return void
+     */
+    protected function copyStub($from, $to)
+    {
+        copy(__DIR__.'/../../stubs/' . $from, $this->directory . '/' . $to);
+    }
 }

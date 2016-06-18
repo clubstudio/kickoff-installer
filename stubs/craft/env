@@ -22,7 +22,9 @@ echo '.env' >> .gitignore
 # Add environment variables to config/db.php
 # ------------------------------------------------------------------------------
 
-sed -i "s/.*'server'.*/    'server' => getenv('DB_HOST'),/" config/db.php
-sed -i "s/.*'database'.*/    'database' => getenv('DB_NAME'),/" config/db.php
-sed -i "s/.*'user'.*/    'user' => getenv('DB_USER'),/" config/db.php
-sed -i "s/.*'password'.*/    'password' => getenv('DB_PASS'),/" config/db.php
+sed -i.bak "s/.*'server'.*/    'server' => getenv('DB_HOST'),/" config/db.php
+sed -i.bak "s/.*'database'.*/    'database' => getenv('DB_NAME'),/" config/db.php
+sed -i.bak "s/.*'user'.*/    'user' => getenv('DB_USER'),/" config/db.php
+sed -i.bak "s/.*'password'.*/    'password' => getenv('DB_PASS'),/" config/db.php
+
+rm config/db.php.bak

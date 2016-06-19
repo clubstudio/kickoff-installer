@@ -84,20 +84,16 @@ class CraftInstaller extends Installer
         $this->output->writeln('<info>Linking Craft with Kickoff...</info>');
 
         $this->copyStub('craft/index', 'index');
-        $this->copyStub('craft/env', 'env.sh');
+        $this->copyStub('craft/postinstall', 'postinstall.sh');
 
         $this->runCommands([
             // Install Composer dependencies.
             'composer install',
 
-            // Update front controller with Dotenv and new path configuration.
-            'tail -n +5 public/index.php >> index',
-            'mv index public/index.php',
-
-            // Use environment variables.
-            'chmod +x env.sh',
-            './env.sh',
-            'rm env.sh',
+            // Update directory structure and use environment vars.
+            'chmod +x postinstall.sh',
+            './postinstall.sh',
+            'rm postinstall.sh',
         ]);
     }
 }

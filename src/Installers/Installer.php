@@ -52,6 +52,13 @@ abstract class Installer
     protected $downloadTo;
 
     /**
+     * Configuration
+     *
+     * @var mixed
+     */
+    protected $config;
+
+    /**
      * Constructor.
      *
      * @param InputInterface  $input
@@ -63,6 +70,8 @@ abstract class Installer
         $this->input = $input;
         $this->output = $output;
         $this->directory = $directory;
+
+        $this->loadConfig();
     }
 
     /**
@@ -103,7 +112,18 @@ abstract class Installer
      *
      * @return void
      */
-    abstract protected function process();
+    protected function process()
+    {
+        if ($this->input->getOption('clean')) {
+            return $this->clean();
+        }
+
+        return $this->kickoff();
+    }
+
+    abstract protected function clean();
+
+    abstract protected function kickoff();
 
     /**
      * Clean-up the temporary zip file.
@@ -112,10 +132,12 @@ abstract class Installer
      */
     public function cleanUp()
     {
-        $this->output->writeln("<comment>Cleaning up {$this->name} installation...</comment>");
+        $this->output->writeln("<info>Cleaning up {$this->name} installation...</info>");
 
         @chmod($this->downloadTo, 0777);
         @unlink($this->downloadTo);
+
+        $this->output->writeln("<comment>All clean!</comment>");
 
         return $this;
     }
@@ -141,6 +163,8 @@ abstract class Installer
      */
     protected function runCommands(array $commands)
     {
+        $commands = array_merge($commands, ['rm -rf tmp']);
+
         $process = new Process(implode(' && ', $commands), $this->directory, null, null, null);
 
         if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
@@ -154,6 +178,7 @@ abstract class Installer
 
     /**
      * Copy a stub file
+     *
      * @param  string $from Stub source location/filename
      * @param  string $to   Stub destination location/filename
      * @return void
@@ -161,5 +186,23 @@ abstract class Installer
     protected function copyStub($from, $to)
     {
         copy(__DIR__.'/../../stubs/' . $from, $this->directory . '/' . $to);
+    }
+
+    /**
+     * Load Configuration from JSON file
+     * @param  string $file Configuration file name
+     * @return mixed        Array if files exists
+     */
+    protected function loadConfig($file = 'kickoff.json')
+    {
+        $configFile = "{$this->directory}/$file";
+
+        if (!file_exists($configFile)) {
+            return;
+        }
+
+        $this->config = json_decode(
+            file_get_contents($configFile)
+        );
     }
 }

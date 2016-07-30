@@ -40,7 +40,7 @@ class NewCommand extends Command
      * Get the full class name of an installer.
      *
      * @param  string $framework Framework short-name.
-     * @return string            Installer class name.
+     * @return string Installer class name.
      */
     protected function getInstallerClass($framework)
     {

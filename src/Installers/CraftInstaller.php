@@ -15,7 +15,7 @@ class CraftInstaller extends Installer
      *
      * @var string
      */
-    protected $downloadFrom = 'http://buildwithcraft.com/latest.zip?accept_license=yes';
+    protected $downloadFrom = 'http://craftcms.com/latest.zip?accept_license=yes';
 
     /**
      * Where the download will be saved to.
@@ -29,17 +29,86 @@ class CraftInstaller extends Installer
      *
      * @return array An array of commands
      */
-    protected function commands()
+    protected function kickoff()
+    {
+        $mappings = $this->config->mappings;
+
+        $this->output->writeln('<info>Copying Stubs...</info>');
+        $this->copyStub('craft/index', 'index');
+        $this->copyStub('craft/phpdotenv', 'phpdotenv.sh');
+        $this->output->writeln('<comment>Stubs copied!</comment>');
+
+        $this->output->writeln('<info>Moving Craft directories...</info>');
+        $this->runCommands($this->moveCraftDirsCommands($mappings));
+        $this->output->writeln('<comment>Craft directories moved!</comment>');
+
+        $this->output->writeln('<info>Linking Craft with Kickoff...</info>');
+        $this->runCommands(array_merge(
+            $this->updateFrontControllerCommands(),
+            $this->phpDotEnvCommands($mappings),
+            $this->pathReplacementCommands($mappings)
+        ));
+    }
+
+    protected function moveCraftDirsCommands($mappings)
     {
         return [
-            'mv tmp/craft/app .',
-            'mv tmp/craft/config .',
-            'mv tmp/craft/plugins .',
-            'mv tmp/craft/storage .',
-            'mv tmp/craft/templates resources/.',
+            "mv tmp/craft/app ./$mappings->app",
+            "mv tmp/craft/config ./$mappings->config",
+            "mv tmp/craft/plugins ./$mappings->plugins",
+            "mv tmp/craft/storage ./$mappings->storage",
+            "mv tmp/craft/templates ./$mappings->templates",
             'mv tmp/public/index.php public/.',
             'rm public/index.html',
         ];
+    }
+
+    protected function updateFrontControllerCommands()
+    {
+        return [
+            'tail -n +5 public/index.php >> index',
+            'mv index public/index.php',
+        ];
+    }
+
+    protected function phpDotEnvCommands($mappings)
+    {
+        return [
+            'chmod +x phpdotenv.sh',
+            './phpdotenv.sh',
+            'rm phpdotenv.sh',
+
+            "sed -i.bak \"s/.*'server'.*/    'server' => getenv('DB_HOST'),/\" {$mappings->config}/db.php",
+            "sed -i.bak \"s/.*'database'.*/    'database' => getenv('DB_NAME'),/\" {$mappings->config}/db.php",
+            "sed -i.bak \"s/.*'user'.*/    'user' => getenv('DB_USER'),/\" {$mappings->config}/db.php",
+            "sed -i.bak \"s/.*'password'.*/    'password' => getenv('DB_PASS'),/\" {$mappings->config}/db.php",
+
+            "rm {$mappings->config}/db.php.bak"
+        ];
+    }
+
+    protected function pathConstants()
+    {
+        return [
+            'config' => 'CRAFT_CONFIG_PATH',
+            'plugins' => 'CRAFT_PLUGINS_PATH',
+            'templates' => 'CRAFT_TEMPLATES_PATH',
+            'storage' => 'CRAFT_STORAGE_PATH',
+            'translations' => 'CRAFT_TRANSLATIONS_PATH',
+        ];
+    }
+
+    protected function pathReplacementCommands($mappings)
+    {
+        $commands  = [];
+        foreach ($this->pathConstants() as $key => $constant) {
+            if (isset($mappings->$key)) {
+                $path = str_replace('/', '\/', "../{$mappings->$key}/");
+                $commands[] = "sed -i.bak \"s/.*'$constant'.*/define('$constant', '$path');/\" public/index.php";
+            }
+        }
+
+        return array_merge($commands, ['rm public/index.php.bak']);
     }
 
     /**
@@ -47,53 +116,18 @@ class CraftInstaller extends Installer
      *
      * @return array An array of commands
      */
-    protected function cleanCommands()
+    public function clean()
     {
-        return [
+        $this->runCommands([
             'mv tmp/craft .',
             'mv tmp/public .',
-        ];
+        ]);
     }
 
-    /**
-     * Process the install job.
-     *
-     * @return void
-     */
-    public function process()
+    protected function runCommands(array $commands)
     {
-        $commands = $this->cleanCommands();
-
-        if (!$this->input->getOption('clean')) {
-            $commands = $this->commands();
-
-            $this->output->writeln('<info>Updating directory structure...</info>');
-        }
-
-        $this->runCommands(
+        return parent::runCommands(
             array_merge($commands, ['rm -rf tmp'])
         );
-
-        if (!$this->input->getOption('clean')) {
-            $this->postInstallCommands();
-        }
-    }
-
-    public function postInstallCommands()
-    {
-        $this->output->writeln('<info>Linking Craft with Kickoff...</info>');
-
-        $this->copyStub('craft/index', 'index');
-        $this->copyStub('craft/postinstall', 'postinstall.sh');
-
-        $this->runCommands([
-            // Install Composer dependencies.
-            'composer install',
-
-            // Update directory structure and use environment vars.
-            'chmod +x postinstall.sh',
-            './postinstall.sh',
-            'rm postinstall.sh',
-        ]);
     }
 }

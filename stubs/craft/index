@@ -13,8 +13,8 @@ try {
 $craftPath = '../';
 
 // Define Paths
-define('CRAFT_CONFIG_PATH', '../config/');
-define('CRAFT_PLUGINS_PATH', '../plugins/');
-define('CRAFT_TEMPLATES_PATH', '../resources/templates/');
-define('CRAFT_STORAGE_PATH', '../storage/');
-define('CRAFT_TRANSLATIONS_PATH', '../resources/lang/');
+define('CRAFT_CONFIG_PATH', '');
+define('CRAFT_PLUGINS_PATH', '');
+define('CRAFT_TEMPLATES_PATH', '');
+define('CRAFT_STORAGE_PATH', '');
+define('CRAFT_TRANSLATIONS_PATH', '');

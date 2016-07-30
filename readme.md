@@ -33,7 +33,7 @@ This will download and install [Kickoff](https://github.com/clubstudioltd/kickof
 
 ###Clean Installs
 
-If you would rather emit Kickoff and get you a clean install of the framework/platform you can use the `--clean` option.
+If you would rather omit Kickoff and get you a clean install of the framework/platform you can use the `--clean` option.
 
 e.g.
 ```

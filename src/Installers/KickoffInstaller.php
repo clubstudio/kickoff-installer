@@ -24,17 +24,17 @@ class KickoffInstaller extends Installer
      */
     protected $downloadTo = 'kickoff.zip';
 
-    /**
-     * Process the install job.
-     *
-     * @return void
-     */
-    public function process()
+    public function clean()
+    {
+        // Do nothing...
+    }
+
+    public function kickoff()
     {
         $this->output->writeln('<info>Installing Kickoff...</info>');
 
         $this->runCommands([
-            'rsync -ar --delete-after tmp/kickoff-master/ .'
+            'rsync --ignore-existing -ar --remove-source-files tmp/kickoff-master/ .'
         ]);
 
         $this->output->writeln('<comment>Kickoff complete.</comment>');

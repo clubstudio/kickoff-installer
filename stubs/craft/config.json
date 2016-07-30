@@ -1,0 +1,10 @@
+{
+    "mappings": {
+        "app": "app",
+        "config": "config",
+        "plugins": "plugins",
+        "templates": "resources/templates",
+        "storage": "storage",
+        "translations": "resources/lang"
+    }
+}

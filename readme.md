@@ -57,4 +57,5 @@ Remember, you need to run `kickoff config framework-name` and make your changes 
 Inspired by Laravel and the Laravel Installer.
 
 ##Roadmap
+* Have `kickoff new craft --clean` command restructure directories if a config file is present
 * Add support for a skeleton Symfony application

@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Club\KickoffInstaller\Installers\KickoffInstaller;
+use Club\KickoffInstaller\Installers\Kickoff\Installer as KickoffInstaller;
 
 class NewCommand extends Command
 {
@@ -32,7 +32,7 @@ class NewCommand extends Command
     protected function installers()
     {
         return [
-            'craft' => \Club\KickoffInstaller\Installers\CraftInstaller::class,
+            'CraftCms' => \Club\KickoffInstaller\Installers\CraftCms\Installer::class,
         ];
     }
 

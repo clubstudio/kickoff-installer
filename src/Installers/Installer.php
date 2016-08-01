@@ -115,15 +115,36 @@ abstract class Installer
     protected function process()
     {
         if ($this->input->getOption('clean')) {
-            return $this->clean();
+            $this->clean();
+
+            return $this;
         }
 
-        return $this->kickoff();
+        $this->kickoff();
+
+        return $this;
     }
 
+    /**
+     * Runs when Kickoff isn't installed
+     *
+     * @return array An array of commands
+     */
     abstract protected function clean();
 
+    /**
+     * Runs once the Kickoff framework has been downloaded
+     *
+     * @return array An array of commands
+     */
     abstract protected function kickoff();
+
+    /**
+     * Runs when the installation process is complete
+     *
+     * @return void
+     */
+    abstract protected function complete();
 
     /**
      * Clean-up the temporary zip file.
@@ -152,7 +173,8 @@ abstract class Installer
         $this->download()
              ->extract()
              ->cleanUp()
-             ->process();
+             ->process()
+             ->complete();
     }
 
     /**
@@ -163,8 +185,6 @@ abstract class Installer
      */
     protected function runCommands(array $commands)
     {
-        $commands = array_merge($commands, ['rm -rf tmp']);
-
         $process = new Process(implode(' && ', $commands), $this->directory, null, null, null);
 
         if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
@@ -185,24 +205,48 @@ abstract class Installer
      */
     protected function copyStub($from, $to)
     {
-        copy(__DIR__.'/../../stubs/' . $from, $this->directory . '/' . $to);
+        copy(
+            __DIR__.'/'.$this->directoryName().'/stubs/'.$from,
+            $this->directory.'/'.$to
+        );
     }
 
     /**
-     * Load Configuration from JSON file
+     * Load Configuration; from either a local file or the installer's default
+     *
      * @param  string $file Configuration file name
      * @return mixed        Array if files exists
      */
-    protected function loadConfig($file = 'kickoff.json')
+    protected function loadConfig()
     {
-        $configFile = "{$this->directory}/$file";
-
-        if (!file_exists($configFile)) {
+        if ($this->loadConfigFromFile($this->directory.'/kickoff.json')) {
+            $this->config->local = true;
             return;
         }
 
-        $this->config = json_decode(
-            file_get_contents($configFile)
-        );
+        $this->loadConfigFromFile(__DIR__.'/'.$this->directoryName().'/config.json');
+    }
+
+    /**
+     * Load Configuration from a JSON file
+     *
+     * @param  string $path The full path to the configuration file
+     * @return mixed        Array if files exists
+     */
+    protected function loadConfigFromFile($path)
+    {
+        if (file_exists($path)) {
+            return $this->config = json_decode(file_get_contents($path));
+        }
+    }
+
+    /**
+     * Get the installers directory name
+     *
+     * @return string camelCase directory name
+     */
+    protected function directoryName()
+    {
+        return lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $this->name))));
     }
 }

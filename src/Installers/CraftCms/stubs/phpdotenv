@@ -23,3 +23,9 @@ EOL
 
 touch .gitignore
 echo '.env' >> .gitignore
+
+# ------------------------------------------------------------------------------
+# Add lines to index.php that load library
+# ------------------------------------------------------------------------------
+
+sed -i -e "2r index-phpdotenv" public/index.php

@@ -31,7 +31,7 @@ class ConfigCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $framework = $input->getArgument('framework');
-        $configPath = __DIR__.'/../../stubs/'.$framework.'/config.json';
+        $configPath = __DIR__.'/../Installers/'.$framework.'/config.json';
 
         if (!file_exists($configPath)) {
             throw new InvalidArgumentException("Could not find configuration data for `$framework`");

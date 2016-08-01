@@ -1,7 +1,9 @@
 <?php
-namespace Club\KickoffInstaller\Installers;
+namespace Club\KickoffInstaller\Installers\Kickoff;
 
-class KickoffInstaller extends Installer
+use Club\KickoffInstaller\Installers\Installer as BaseInstaller;
+
+class Installer extends BaseInstaller
 {
     /**
      * Installable framework name.
@@ -24,6 +26,11 @@ class KickoffInstaller extends Installer
      */
     protected $downloadTo = 'kickoff.zip';
 
+    /**
+     * Runs when Kickoff isn't installed
+     *
+     * @return array An array of commands
+     */
     public function clean()
     {
         // Do nothing...
@@ -34,9 +41,19 @@ class KickoffInstaller extends Installer
         $this->output->writeln('<info>Installing Kickoff...</info>');
 
         $this->runCommands([
-            'rsync --ignore-existing -ar --remove-source-files tmp/kickoff-master/ .'
+            'rsync --ignore-existing -ar --remove-source-files tmp/kickoff-master/ .',
         ]);
 
         $this->output->writeln('<comment>Kickoff complete.</comment>');
+    }
+
+    /**
+     * Runs when the installation process is complete
+     *
+     * @return void
+     */
+    public function complete()
+    {
+        $this->runCommands(['rm -rf tmp']);
     }
 }

@@ -32,7 +32,7 @@ $ mkdir my-new-site && cd my-new-site
 then run:
 
 ```
-$ kickoff new craft
+$ kickoff new CraftCms
 ```
 
 This will download and install [Kickoff](https://github.com/clubstudioltd/kickoff), followed by CraftCMS and then configure the default CraftCMS install to work with [Kickoff](https://github.com/clubstudioltd/kickoff) – including updating the default directory structure.
@@ -43,13 +43,13 @@ If you would rather omit Kickoff and get you a clean install of the framework/pl
 
 e.g.
 ```
-$ kickoff new craft --clean
+$ kickoff new CraftCms --clean
 ```
 
 ##Custom Configuration
 Each framework installer has it's own configuration. If you would like to make changes to the default settings you can use the `config` command. This will generate a configuration file (`kickoff.json`) for the specified framework installation script.
 
-An example use case would be configuring the directory structure of a CraftCMS installation. Running `kickoff config craft` would generate the necessary config file, which you can then customise to your individual needs.
+An example use case would be configuring the directory structure of a CraftCMS installation. Running `kickoff config CraftCms` would generate the necessary config file, which you can then customise to your individual needs.
 
 Remember, you need to run `kickoff config framework-name` and make your changes before running `kickoff new framework-name`.
 
@@ -57,5 +57,5 @@ Remember, you need to run `kickoff config framework-name` and make your changes 
 Inspired by Laravel and the Laravel Installer.
 
 ##Roadmap
-* Have `kickoff new craft --clean` command restructure directories if a config file is present
+* Have `kickoff new CraftCms --clean` command restructure directories if a config file is present
 * Add support for a skeleton Symfony application

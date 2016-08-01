@@ -3,7 +3,7 @@
 Kick start the development of your new website or web application. Hit the ground running with pre-configured Gulp tasks, linter configurations, a sensible directory structure and default meta files.
 
 ##Installation
-The Kickoff Installer requires the PHP package manager. Visit the [Composer website](https://getcomposer.org/) for instructions on how to install it on your system. 
+The Kickoff Installer requires the PHP package manager. Visit the [Composer website](https://getcomposer.org/) for instructions on how to install it on your system.
 
 Once you have Composer installed, you will need to require the installer as a global dependency:
 
@@ -15,10 +15,10 @@ A quick Google search should help you find out how to add to your PATH. If you u
 
 ##Framework Support
 
-The installer supports the following frameworks: 
- 
+The installer supports the following frameworks:
+
  * [CraftCMS](http://craftcms.com)
- 
+
 It is built so you can easily add support for additional frameworks/platforms without much fuss.
 
 ##Kickoff + CraftCMS Usage Example
@@ -51,7 +51,7 @@ Each framework installer has it's own configuration. If you would like to make c
 
 An example use case would be configuring the directory structure of a CraftCMS installation. Running `kickoff config craft` would generate the necessary config file, which you can then customise to your individual needs.
 
-Remember, you need to run `kickoff config framework-name` and make your changes before running `kickoff new framework-name`. 
+Remember, you need to run `kickoff config framework-name` and make your changes before running `kickoff new framework-name`.
 
 ##Credits
 Inspired by Laravel and the Laravel Installer.

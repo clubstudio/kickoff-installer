@@ -243,10 +243,10 @@ abstract class Installer
     /**
      * Get the installers directory name
      *
-     * @return string camelCase directory name
+     * @return string StudlyCase directory name
      */
     protected function directoryName()
     {
-        return lcfirst(str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', $this->name))));
+        return str_replace(' ', '', ucwords(str_replace(['-', '_'], ' ', strtolower($this->name))));
     }
 }

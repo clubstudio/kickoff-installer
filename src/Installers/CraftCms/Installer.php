@@ -1,6 +1,6 @@
 <?php
 
-namespace Installers\CraftCms;
+namespace Club\KickoffInstaller\Installers\CraftCms;
 
 use Club\KickoffInstaller\Installers\Installer as BaseInstaller;
 

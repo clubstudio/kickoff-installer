@@ -10,12 +10,7 @@ composer install
 # Create .env file
 # ------------------------------------------------------------------------------
 
-cat > .env <<EOL
-DB_HOST=localhost
-DB_NAME=
-DB_USER=
-DB_PASS=
-EOL
+cp .env-example .env
 
 # ------------------------------------------------------------------------------
 # Add paths to .gitignore
@@ -29,3 +24,10 @@ echo '.env' >> .gitignore
 # ------------------------------------------------------------------------------
 
 sed -i -e "2r index-phpdotenv" public/index.php
+
+# ------------------------------------------------------------------------------
+# Remove temporary files
+# ------------------------------------------------------------------------------
+
+rm index-phpdotenv
+rm public/index.php-e

@@ -113,6 +113,11 @@ class Installer extends BaseInstaller
 
             "mkdir -p ./$mappings->templates/",
             "rsync -a tmp/craft/templates/ ./$mappings->templates/",
+
+            "echo '/$mappings->app' >> .gitignore",
+            "echo '/$mappings->storage/backups/**/*' >> .gitignore",
+            "echo '/$mappings->storage/runtime/**/*' >> .gitignore",
+            "echo '/$mappings->storage/userphotos/**/*' >> .gitignore",
         ]);
 
         $this->output->writeln('<comment>Craft directories moved!</comment>');

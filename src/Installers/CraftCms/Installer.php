@@ -28,7 +28,7 @@ class Installer extends BaseInstaller
     protected $downloadTo = 'craft.zip';
 
     /**
-     * Configurable directories to path constant mappings
+     * Configurable directories to path constant mappings.
      *
      * @var array
      */
@@ -41,7 +41,7 @@ class Installer extends BaseInstaller
     ];
 
     /**
-     * Commands to run when Kickoff isn't installed
+     * Commands to run when Kickoff isn't installed.
      *
      * @return array An array of commands
      */
@@ -63,7 +63,7 @@ class Installer extends BaseInstaller
     }
 
     /**
-     * Commands to run once the framework has been downloaded
+     * Commands to run once the framework has been downloaded.
      *
      * @return array An array of commands
      */
@@ -79,9 +79,7 @@ class Installer extends BaseInstaller
     }
 
     /**
-     * Runs when the installation process is complete
-     *
-     * @return void
+     * Runs when the installation process is complete.
      */
     protected function complete()
     {
@@ -91,8 +89,7 @@ class Installer extends BaseInstaller
     /**
      * Move Craft Directories in to those defined in the configuration file.
      *
-     * @param  object $mappings An object of directory mappings
-     * @return void
+     * @param object $mappings An object of directory mappings
      */
     protected function moveCraftDirectories($mappings)
     {
@@ -125,8 +122,6 @@ class Installer extends BaseInstaller
 
     /**
      * Swap the default Kickoff index file with the Craft index file.
-     *
-     * @return void
      */
     protected function swapIndexFile()
     {
@@ -134,16 +129,13 @@ class Installer extends BaseInstaller
 
         $this->runCommands([
             'mv tmp/public/index.php ./public/',
-            'rm public/index.html',
         ]);
 
         $this->output->writeln('<comment>Front Controller moved!</comment>');
     }
 
     /**
-     * Inject custom directory mappings into the Craft index file
-     *
-     * @return void
+     * Inject custom directory mappings into the Craft index file.
      */
     protected function updateFrontController()
     {
@@ -156,10 +148,9 @@ class Installer extends BaseInstaller
     }
 
     /**
-     * Install PHPDotEnv Library
+     * Install PHPDotEnv Library.
      *
-     * @param  object $mappings An object of directory mappings
-     * @return void
+     * @param object $mappings An object of directory mappings
      */
     protected function installPhpDotEnv($mappings)
     {
@@ -181,14 +172,13 @@ class Installer extends BaseInstaller
     }
 
     /**
-     * Replace path names in the Craft index file
+     * Replace path names in the Craft index file.
      *
-     * @param  object $mappings An object of directory mappings
-     * @return void
+     * @param object $mappings An object of directory mappings
      */
     protected function replacePaths($mappings)
     {
-        $commands  = [];
+        $commands = [];
         foreach (self::$pathConstants as $key => $constant) {
             if (isset($mappings->$key)) {
                 $path = str_replace('/', '\/', "../{$mappings->$key}/");

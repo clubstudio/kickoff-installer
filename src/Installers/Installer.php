@@ -1,4 +1,5 @@
 <?php
+
 namespace Club\KickoffInstaller\Installers;
 
 use ZipArchive;
@@ -52,7 +53,7 @@ abstract class Installer
     protected $downloadTo;
 
     /**
-     * Configuration
+     * Configuration.
      *
      * @var mixed
      */
@@ -75,6 +76,16 @@ abstract class Installer
     }
 
     /**
+     * Get Framework name.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return $this->name;
+    }
+
+    /**
      * Download the temporary zip file.
      *
      * @return $this
@@ -83,7 +94,7 @@ abstract class Installer
     {
         $this->output->writeln("<info>Downloading {$this->name}...</info>");
 
-        $response = (new Client)->get($this->downloadFrom);
+        $response = (new Client())->get($this->downloadFrom);
 
         file_put_contents($this->downloadTo, $response->getBody());
 
@@ -99,7 +110,7 @@ abstract class Installer
      */
     protected function extract()
     {
-        $archive = new ZipArchive;
+        $archive = new ZipArchive();
         $archive->open($this->downloadTo);
         $archive->extractTo(getcwd() . '/tmp');
         $archive->close();
@@ -109,12 +120,10 @@ abstract class Installer
 
     /**
      * Process the install job.
-     *
-     * @return void
      */
     protected function process()
     {
-        if ($this->input->getOption('clean')) {
+        if ($this->input->hasOption('clean') and $this->input->getOption('clean')) {
             $this->clean();
 
             return $this;
@@ -126,23 +135,21 @@ abstract class Installer
     }
 
     /**
-     * Runs when Kickoff isn't installed
+     * Runs when Kickoff isn't installed.
      *
      * @return array An array of commands
      */
     abstract protected function clean();
 
     /**
-     * Runs once the Kickoff framework has been downloaded
+     * Runs once the Kickoff framework has been downloaded.
      *
      * @return array An array of commands
      */
     abstract protected function kickoff();
 
     /**
-     * Runs when the installation process is complete
-     *
-     * @return void
+     * Runs when the installation process is complete.
      */
     abstract protected function complete();
 
@@ -158,15 +165,13 @@ abstract class Installer
         @chmod($this->downloadTo, 0777);
         @unlink($this->downloadTo);
 
-        $this->output->writeln("<comment>All clean!</comment>");
+        $this->output->writeln('<comment>All clean!</comment>');
 
         return $this;
     }
 
     /**
      * Process the install job.
-     *
-     * @return void
      */
     public function install()
     {
@@ -180,8 +185,7 @@ abstract class Installer
     /**
      * Execute Commands.
      *
-     * @param  array $commands An array of commands to execute.
-     * @return void
+     * @param array $commands An array of commands to execute
      */
     protected function runCommands(array $commands)
     {
@@ -197,41 +201,43 @@ abstract class Installer
     }
 
     /**
-     * Copy a stub file
+     * Copy a stub file.
      *
-     * @param  string $from Stub source location/filename
-     * @param  string $to   Stub destination location/filename
-     * @return void
+     * @param string $from Stub source location/filename
+     * @param string $to   Stub destination location/filename
      */
     protected function copyStub($from, $to)
     {
         copy(
-            __DIR__.'/'.$this->directoryName().'/stubs/'.$from,
-            $this->directory.'/'.$to
+            __DIR__ . '/' . $this->directoryName() . '/stubs/' . $from,
+            $this->directory . '/' . $to
         );
     }
 
     /**
-     * Load Configuration; from either a local file or the installer's default
+     * Load Configuration; from either a local file or the installer's default.
      *
-     * @param  string $file Configuration file name
-     * @return mixed        Array if files exists
+     * @param string $file Configuration file name
+     *
+     * @return mixed Array if files exists
      */
     protected function loadConfig()
     {
-        if ($this->loadConfigFromFile($this->directory.'/kickoff.json')) {
+        if ($this->loadConfigFromFile($this->directory . '/kickoff.json')) {
             $this->config->local = true;
+
             return;
         }
 
-        $this->loadConfigFromFile(__DIR__.'/'.$this->directoryName().'/config.json');
+        $this->loadConfigFromFile(__DIR__ . '/' . $this->directoryName() . '/config.json');
     }
 
     /**
-     * Load Configuration from a JSON file
+     * Load Configuration from a JSON file.
      *
-     * @param  string $path The full path to the configuration file
-     * @return mixed        Array if files exists
+     * @param string $path The full path to the configuration file
+     *
+     * @return mixed Array if files exists
      */
     protected function loadConfigFromFile($path)
     {
@@ -241,7 +247,7 @@ abstract class Installer
     }
 
     /**
-     * Get the installers directory name
+     * Get the installers directory name.
      *
      * @return string StudlyCase directory name
      */

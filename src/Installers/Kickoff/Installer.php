@@ -1,4 +1,5 @@
 <?php
+
 namespace Club\KickoffInstaller\Installers\Kickoff;
 
 use Club\KickoffInstaller\Installers\Installer as BaseInstaller;
@@ -27,7 +28,7 @@ class Installer extends BaseInstaller
     protected $downloadTo = 'kickoff.zip';
 
     /**
-     * Runs when Kickoff isn't installed
+     * Runs when Kickoff isn't installed.
      *
      * @return array An array of commands
      */
@@ -48,9 +49,7 @@ class Installer extends BaseInstaller
     }
 
     /**
-     * Runs when the installation process is complete
-     *
-     * @return void
+     * Runs when the installation process is complete.
      */
     public function complete()
     {

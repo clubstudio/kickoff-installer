@@ -100,19 +100,19 @@ class Installer extends BaseInstaller
 
         $this->runCommands([
             "mkdir -p ./$mappings->app/",
-            "rsync -a tmp/craft/app/ ./$mappings->app/",
+            "rsync -a --ignore-existing tmp/craft/app/ ./$mappings->app/",
 
             "mkdir -p ./$mappings->config/",
-            "rsync -a tmp/craft/config/ ./$mappings->config/",
+            "rsync -a --ignore-existing tmp/craft/config/ ./$mappings->config/",
 
             "mkdir -p ./$mappings->plugins/",
-            "rsync -a tmp/craft/plugins/ ./$mappings->plugins/",
+            "rsync -a --ignore-existing tmp/craft/plugins/ ./$mappings->plugins/",
 
             "mkdir -p ./$mappings->storage/",
-            "rsync -a tmp/craft/storage/ ./$mappings->storage/",
+            "rsync -a --ignore-existing tmp/craft/storage/ ./$mappings->storage/",
 
             "mkdir -p ./$mappings->templates/",
-            "rsync -a tmp/craft/templates/ ./$mappings->templates/",
+            "rsync -a --ignore-existing tmp/craft/templates/ ./$mappings->templates/",
 
             "echo '/$mappings->app' >> .gitignore",
             "echo '/$mappings->storage/backups/**/*' >> .gitignore",

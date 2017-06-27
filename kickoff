@@ -12,7 +12,7 @@ if (file_exists(__DIR__.'/../../autoload.php')) {
     require __DIR__.'/vendor/autoload.php';
 }
 
-$app = new Application('CraftCMS Installer', '1.1.0');
+$app = new Application('CraftCMS Installer', '2.1.0');
 $app->add(new NewCommand);
 $app->add(new AddCommand);
 $app->add(new ConfigCommand);

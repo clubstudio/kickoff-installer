@@ -20,7 +20,7 @@ class NewCommand extends Command
     {
         $this->setName('new')
              ->setDescription('Kickoff a new website or application')
-             ->addArgument('framework', InputArgument::REQUIRED)
+             ->addArgument('framework', InputArgument::OPTIONAL)
              ->addOption('clean', null, InputOption::VALUE_NONE, 'If set, Kickoff will be omitted from the install');
     }
 
@@ -63,13 +63,15 @@ class NewCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $cwd = getcwd();
-        $installer = $this->getInstallerClass($input->getArgument('framework'));
+        $framework = $input->getArgument('framework');
 
         if (!$input->getOption('clean')) {
             (new KickoffInstaller($input, $output, $cwd))->install();
         }
 
-        (new $installer($input, $output, $cwd))->install();
+        if ($framework and $installer = $this->getInstallerClass($framework)) {
+            (new $installer($input, $output, $cwd))->install();
+        }
 
         $output->writeln('<comment>All done. Happy coding!</comment>');
     }
